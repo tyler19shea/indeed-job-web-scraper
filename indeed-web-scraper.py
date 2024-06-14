@@ -21,7 +21,9 @@ def extract_job_data(job_cards):
         company = item.find('span', class_='css-63koeb').get_text()
         location = item.find('div', class_='css-1p0sjhy').get_text()
         summary = item.find('div', class_='css-9446fg').get_text()
-        job_list.append({'Title': title, 'Company': company, 'Location': location, 'Summary': summary})
+        link = item.find('a', class_='jcs-JobTitle').get('href')
+        fixed_link = f'https://www.indeed.com{link}'
+        job_list.append({'Title': title, 'Company': company, 'Location': location, 'Summary': summary, 'Link': fixed_link})
     return job_list
 
 def save_to_csv(job_list, filename='indeed_jobs.csv'):
