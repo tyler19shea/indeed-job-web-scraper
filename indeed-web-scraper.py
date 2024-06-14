@@ -21,7 +21,7 @@ def extract_job_data(job_cards):
         company = item.find('span', class_='css-63koeb').get_text()
         location = item.find('div', class_='css-1p0sjhy').get_text()
         summary = item.find('div', class_='css-9446fg').get_text()
-        job_list.append({'Title': title, 'company': company, 'location': location, 'summary': summary})
+        job_list.append({'Title': title, 'Company': company, 'Location': location, 'Summary': summary})
     return job_list
 
 def save_to_csv(job_list, filename='indeed_jobs.csv'):
@@ -30,10 +30,7 @@ def save_to_csv(job_list, filename='indeed_jobs.csv'):
     print(f'Data saved to {filename}')
 
 def main():
-    job_title = "Engineer"
-    location = "Richmond, va"
     url = f"https://www.indeed.com/jobs?q={job_title}&l={location}"
-
 
     content = fetch_web_page(url)
     job_cards = parse_html(content)
@@ -43,6 +40,8 @@ def main():
 
 
 if __name__ == '__main__':
+    job_title = input("Job Role to search for: ")
+    location = input("Identify location to look for (remote): ")
     try:
         driver = webdriver.Chrome()
         main()
