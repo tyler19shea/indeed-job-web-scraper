@@ -1,5 +1,5 @@
 # indeed-job-web-scraper
-This program utilizes the selenium library to scrape through a dynamic website. The website it scrapes is indeed and then places its contents into a csv file to organize it. 
+This program utilizes the selenium library to scrape through a dynamic website. The website it scrapes is indeed and then places its contents into a csv file to organize it. The data saved includes the job title, the company, the location, and a link to the post on indeed. The link will have to be copied to your clipboard and pasted into a web browser to be viewed.
 
 The libraries used are the BeautifulSoup library to handle the HTML content and then pandas library (along with the selenium library). The libraries can be installed by utilizing the folowing command:
 pip install pandas selenium beautifulsoup4
