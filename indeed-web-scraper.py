@@ -26,6 +26,16 @@ def extract_job_data(job_cards):
         job_list.append({'Title': title, 'Company': company, 'Location': location, 'Summary': summary, 'Link': fixed_link})
     return job_list
 
+def get_next_page(soup):
+    try: 
+        next_page = soup.find('a', {'aria-label': 'Next Page'}).get('href')
+        next_page_url = f'http://www.indeed.com{next_page}'
+        print('Fetching next page')
+        return next_page_url
+    except AttributeError:
+        print('No more pages')
+        return None
+
 def save_to_csv(job_list, filename='indeed_jobs.csv'):
     df = pd.DataFrame(job_list)
     df.to_csv(filename, index=False)
@@ -34,11 +44,18 @@ def save_to_csv(job_list, filename='indeed_jobs.csv'):
 def main():
     url = f"https://www.indeed.com/jobs?q={job_title}&l={location}"
 
-    content = fetch_web_page(url)
-    job_cards = parse_html(content)
-    jobs = extract_job_data(job_cards)
+    all_jobs = []
 
-    save_to_csv(jobs)
+    while url:
+        content = fetch_web_page(url)
+        job_cards = parse_html(content)
+        jobs = extract_job_data(job_cards)
+        all_jobs.extend(jobs)
+
+        soup = BeautifulSoup(content, 'html.parser')
+        url = get_next_page(soup)
+
+    save_to_csv(all_jobs)
 
 
 if __name__ == '__main__':
