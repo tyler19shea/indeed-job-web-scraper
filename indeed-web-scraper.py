@@ -1,9 +1,15 @@
 import time
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 import pandas as pd
 
-def fetch_web_page (url):
+def create_driver():
+    driver = webdriver.Chrome()
+    driver.set_window_size(8, 8)
+    return driver
+
+def fetch_web_page (driver, url):
     driver.get(url)
     time.sleep(3)
     return driver.page_source
@@ -46,8 +52,10 @@ def main():
 
     all_jobs = []
 
+    driver = create_driver()
+
     while url:
-        content = fetch_web_page(url)
+        content = fetch_web_page(driver, url)
         job_cards = parse_html(content)
         jobs = extract_job_data(job_cards)
         all_jobs.extend(jobs)
@@ -56,18 +64,19 @@ def main():
         url = get_next_page(soup)
 
     save_to_csv(all_jobs)
+    driver.quit()
 
 
 if __name__ == '__main__':
     job_title = input("Job Role to search for: ")
     location = input("Identify location to look for (remote): ")
     try:
-        driver = webdriver.Chrome()
+        # driver = webdriver.Chrome()
         main()
     except Exception as e:
         print(f'Error: {e}')
-    finally:
-        driver.quit()
+    # finally:
+        # driver.quit()
 
 
 
