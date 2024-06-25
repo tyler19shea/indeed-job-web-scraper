@@ -71,12 +71,9 @@ if __name__ == '__main__':
     job_title = input("Job Role to search for: ")
     location = input("Identify location to look for (remote): ")
     try:
-        # driver = webdriver.Chrome()
         main()
     except Exception as e:
         print(f'Error: {e}')
-    # finally:
-        # driver.quit()
 
 
 
